@@ -30,6 +30,8 @@
               cargo-watch
               cargo-flamegraph
               cargo-edit
+              pkgconfig
+              openssl
 
               rnix-lsp
               nixpkgs-fmt

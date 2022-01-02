@@ -11,8 +11,7 @@ impl Fib {
 
     fn next(&mut self) {
         let new_kids = self.rabbits[1..].iter().sum();
-        let mut new_rabbits = Vec::new();
-        new_rabbits.push(new_kids);
+        let mut new_rabbits = vec![new_kids];
         let len = self.rabbits.len() - 1;
         new_rabbits.append(&mut self.rabbits[0..len].to_vec());
         self.rabbits = new_rabbits;

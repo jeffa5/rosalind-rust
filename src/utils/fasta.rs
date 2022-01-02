@@ -2,11 +2,23 @@ use crate::utils::sequence::Sequence;
 use std::convert::TryFrom;
 use std::fmt::Display;
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::{self, BufRead, BufReader};
 
 #[derive(Debug)]
 pub struct Fasta<T> {
     data: Vec<(String, T)>,
+}
+
+impl<T> Fasta<T>
+where
+    T: Sequence,
+    T::Error: ToString,
+{
+    pub fn load(path: &str) -> Result<Self, std::io::Error> {
+        let file = File::open(path)?;
+        let s = Self::try_from(file)?;
+        Ok(s)
+    }
 }
 
 impl<T> Fasta<T> {
@@ -34,7 +46,7 @@ where
     T: Sequence,
     T::Error: ToString,
 {
-    type Error = String;
+    type Error = io::Error;
 
     fn try_from(file: File) -> Result<Self, Self::Error> {
         let reader = BufReader::new(file);
@@ -43,20 +55,17 @@ where
         let mut vec = Vec::new();
 
         for line in reader.lines() {
-            let line = match line {
-                Ok(l) => l,
-                Err(e) => return Err(format!("{}", e)),
-            };
-            if line.starts_with('>') {
+            let line = line?;
+            if let Some(line) = line.strip_prefix('>') {
                 if let Some(previous_id) = id {
                     let t = match T::try_from(sequence) {
                         Ok(v) => v,
-                        Err(e) => return Err(e.to_string()),
+                        Err(e) => return Err(io::Error::new(io::ErrorKind::Other, e.to_string())),
                     };
                     vec.push((previous_id, t));
                     sequence = String::new();
                 }
-                id = Some(line[1..].to_string());
+                id = Some(line.to_string());
             } else {
                 sequence.push_str(line.trim())
             }
@@ -64,7 +73,7 @@ where
         if let Some(id) = id {
             let t = match T::try_from(sequence) {
                 Ok(v) => v,
-                Err(e) => return Err(e.to_string()),
+                Err(e) => return Err(io::Error::new(io::ErrorKind::Other, e.to_string())),
             };
             vec.push((id, t));
         }
@@ -97,7 +106,7 @@ where
         let mut data = Vec::new();
 
         for line in s.lines() {
-            if line.starts_with('>') {
+            if let Some(line) = line.strip_prefix('>') {
                 if let Some(previous_id) = id {
                     let t = match T::try_from(sequence) {
                         Ok(v) => v,
@@ -106,7 +115,7 @@ where
                     data.push((previous_id, t));
                     sequence = String::new();
                 }
-                id = Some(line[1..].to_string());
+                id = Some(line.to_string());
             } else {
                 sequence.push_str(line.trim())
             }

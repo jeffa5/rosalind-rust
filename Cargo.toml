@@ -5,7 +5,9 @@ authors = ["Jeffas <dev@jeffas.io>"]
 edition = "2018"
 
 [dependencies]
-clap = "2.33.0"
+clap = { version = "3", features = ["derive"] }
 wl-clipboard-rs = "0.3.0"
 itertools = "0.8.0"
 reqwest = "0.9.18"
+anyhow = "1.0.52"
+maplit = "1.0.2"

@@ -38,12 +38,12 @@ pub fn solve(input: Fasta<Dna>) -> String {
     }
 
     format!(
-        "{}\n{}\n{}\n{}\n{}",
+        "{}\nA: {}\nC: {}\nG: {}\nT: {}",
         consensus.iter().join(""),
-        format!("A: {}", a.iter().join(" ")),
-        format!("C: {}", c.iter().join(" ")),
-        format!("G: {}", g.iter().join(" ")),
-        format!("T: {}", t.iter().join(" "))
+        a.iter().join(" "),
+        c.iter().join(" "),
+        g.iter().join(" "),
+        t.iter().join(" "),
     )
 }
 

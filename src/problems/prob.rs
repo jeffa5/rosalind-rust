@@ -30,11 +30,7 @@ pub fn solve(input: &str) -> String {
         )
     }
 
-    output
-        .iter()
-        .map(|x| format!("{:.3}", x))
-        .join(" ")
-        .to_string()
+    output.iter().map(|x| format!("{:.3}", x)).join(" ")
 }
 
 #[cfg(test)]

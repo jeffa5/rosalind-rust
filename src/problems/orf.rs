@@ -21,7 +21,7 @@ pub fn solve(mut input: Fasta<Dna>) -> String {
         let sequence = dna.sequence();
         for i in 0..sequence.len() {
             let s = try_from_dna(&Dna::from(sequence[i..].to_vec()));
-            if s != "" {
+            if !s.is_empty() {
                 treeset.insert(s);
             }
         }
@@ -29,7 +29,7 @@ pub fn solve(mut input: Fasta<Dna>) -> String {
         let sequence = dna.sequence();
         for i in 0..sequence.len() {
             let s = try_from_dna(&Dna::from(sequence[i..].to_vec()));
-            if s != "" {
+            if !s.is_empty() {
                 treeset.insert(s);
             }
         }
