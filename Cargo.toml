@@ -1,0 +1,11 @@
+[package]
+name = "rosalind-rust"
+version = "0.1.0"
+authors = ["Jeffas <dev@jeffas.io>"]
+edition = "2018"
+
+[dependencies]
+clap = "2.33.0"
+wl-clipboard-rs = "0.3.0"
+itertools = "0.8.0"
+reqwest = "0.9.18"
